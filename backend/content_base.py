@@ -2,8 +2,8 @@ import copy
 import numpy as np
 import pandas as pd
 
-_GAMES_DATASET_FILENAME = "steam_games_with_one_hot_v2.csv"
-_USER_PROFILES_FILENAME = "user_profiles_content_based_one_hot.csv"
+_GAMES_DATASET_FILENAME = "/data/steam_games_with_one_hot_v2.csv"
+_USER_PROFILES_FILENAME = "/data/user_profiles_content_based_one_hot.csv"
 
 def new_user_profiles():
     '''
