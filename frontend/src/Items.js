@@ -6,26 +6,26 @@ import ImageListItemBar from "@mui/material/ImageListItemBar";
 import IconButton from "@mui/material/IconButton";
 import { Box, Rating, Typography } from "@mui/material";
 import NextButton from "./SubmitButton";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const itemData = [
   {
     img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1190970/header_alt_assets_0.jpg?t=1709724676",
-    title: "House Flipper 2",
+    name: "House Flipper 2",
     author: "@bkristastucchio",
-    rating: 2,
+    all_reviews_score: 2,
   },
   {
     img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1364780/header_alt_assets_9.jpg?t=1709012771",
-    title: "Street Fighter™ 6",
+    name: "Street Fighter™ 6",
     author: "@bkristastucchio",
-    rating: 4,
+    all_reviews_score: 4,
   },
   {
     img: "https://cdn.cloudflare.steamstatic.com/steam/apps/394360/header_alt_assets_3.jpg?t=1709243951",
-    title: "Hearts of Iron IV",
+    name: "Hearts of Iron IV",
     author: "@bkristastucchio",
-    rating: 1,
+    all_reviews_score: 1,
   },
 ];
 
@@ -40,7 +40,7 @@ export default function Items() {
   const handleRateItemOnClick = (itemIndex) => (event, newValue) => {
     const cp = [...items];
     cp[itemIndex] = { ...cp[itemIndex] };
-    cp[itemIndex].rating = newValue;
+    cp[itemIndex].all_reviews_score = newValue;
     setItems(cp);
   };
   return (
@@ -70,7 +70,7 @@ export default function Items() {
             <img
               srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
               src={`${item.img}?w=248&fit=crop&auto=format`}
-              alt={item.title}
+              alt={item.name}
               loading="lazy"
             />
             <ImageListItemBar
@@ -94,7 +94,7 @@ export default function Items() {
                       }
                     }
                     name="simple-controlled"
-                    value={items[index].rating}
+                    value={items[index].all_reviews_score}
                     onChange={handleRateItemOnClick(index)}
                   />
                 </IconButton>

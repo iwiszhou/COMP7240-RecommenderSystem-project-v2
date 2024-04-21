@@ -13,12 +13,15 @@ function App() {
         <Headers />
         <main className="app-wrapper">
           <Routes>
+            {/* Page 1 */}
             <Route path="/" element={<Tags />}></Route>
-            <Route path="/items" element={<Items />}></Route>
+            {/* Page 2 */}
             <Route
               path="/learn-your-preference"
               element={<LearnYourPreference />}
             ></Route>
+            {/* Page 3 */}
+            <Route path="/items" element={<Items />}></Route>
           </Routes>
         </main>
       </div>

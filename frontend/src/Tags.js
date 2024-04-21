@@ -1,31 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/material/Button";
 import { Box } from "@mui/system";
 import { Stack, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import NextButton from "./SubmitButton";
-
-//Feel free to add more tags here. UI will auto render
-const tagData = [
-  "FPS",
-  "Gore",
-  "Action",
-  "Demons",
-  "Shooter",
-  "First-Person",
-  "Great Soundtrack",
-  "Multiplayer",
-  "Singleplayer",
-  "Fast-Paced",
-];
+import { fetchTag } from "./APIs";
 
 const config = {
-  rowPerItem: 3, // display n item per row
+  rowPerItem: 4, // display n item per row
 };
 
 function Tags() {
   const navigate = useNavigate();
   const [selected, setSelected] = useState([]);
+  const [tagData, setTagData] = useState([]);
+
+  useEffect(() => {
+    fetchTag().then((data) => {
+      console.log(data);
+      setTagData(data);
+    });
+  }, []);
+
   const handleTagOnClick = (val) => () => {
     const cp = [...selected];
     if (selected.includes(val)) {
@@ -38,6 +34,7 @@ function Tags() {
     }
     setSelected(cp);
   };
+
   return (
     <div>
       <Typography
@@ -74,6 +71,7 @@ function Tags() {
             sx={{
               margin: "7px",
               fontSize: "1rem",
+              color: "#f8f8f8",
             }}
             onClick={handleTagOnClick(data)}
           >
@@ -86,7 +84,11 @@ function Tags() {
       <NextButton
         text={"Next"}
         onClick={() => {
-          navigate("/learn-your-preference");
+          navigate("/learn-your-preference", {
+            state: {
+              tags: selected,
+            },
+          });
         }}
       />
     </div>

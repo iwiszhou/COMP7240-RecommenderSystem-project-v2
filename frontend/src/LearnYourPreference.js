@@ -6,37 +6,25 @@ import ImageListItemBar from "@mui/material/ImageListItemBar";
 import IconButton from "@mui/material/IconButton";
 import { Box, Typography } from "@mui/material";
 import NextButton from "./SubmitButton";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
-
-const itemData = [
-  {
-    img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1190970/header_alt_assets_0.jpg?t=1709724676",
-    title: "House Flipper 2",
-    author: "@bkristastucchio",
-    isLike: false,
-  },
-  {
-    img: "https://cdn.cloudflare.steamstatic.com/steam/apps/1364780/header_alt_assets_9.jpg?t=1709012771",
-    title: "Street Fighter™ 6",
-    author: "@bkristastucchio",
-    isLike: false,
-  },
-  {
-    img: "https://cdn.cloudflare.steamstatic.com/steam/apps/394360/header_alt_assets_3.jpg?t=1709243951",
-    title: "Hearts of Iron IV",
-    author: "@bkristastucchio",
-    isLike: false,
-  },
-];
+import { fetchGameByTags } from "./APIs";
 
 export default function LearnYourPreference() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [items, setItems] = useState([]);
 
+  let tags = location.state.tags;
+  console.log(tags);
+
   useEffect(() => {
-    setItems(itemData.map((i) => ({ ...i })));
+    fetchGameByTags(tags).then((data) => {
+      console.log(data);
+      setItems(data);
+    });
+    // setItems(itemData.map((i) => ({ ...i })));
   }, []);
 
   const handleRateItemOnClick = (itemIndex) => (event, newValue) => {
@@ -68,16 +56,16 @@ export default function LearnYourPreference() {
           </Typography>
         </ImageListItem>
         {items.map((item, index) => (
-          <ImageListItem key={item.img}>
+          <ImageListItem key={item.id}>
             <img
-              srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-              src={`${item.img}?w=248&fit=crop&auto=format`}
-              alt={item.title}
+              srcSet={item.img}
+              src={item.img}
+              alt={item.name}
               loading="lazy"
             />
             <ImageListItemBar
-              title={item.title}
-              subtitle={item.author}
+              title={item.name}
+              subtitle={item.developer}
               sx={{
                 background: "rgb(2,0,36)",
                 background:
@@ -91,7 +79,7 @@ export default function LearnYourPreference() {
                       transform: "scale(1.5)",
                     },
                   }}
-                  aria-label={`info about ${item.title}`}
+                  aria-label={`info about ${item.name}`}
                 >
                   <ThumbUpIcon
                     onClick={handleRateItemOnClick(index)}

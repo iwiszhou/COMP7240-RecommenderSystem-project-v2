@@ -23,8 +23,12 @@ def get_all_game_tags():
 def get_games_by_tags():
     try:
         data = json.loads(request.data)
-        tag_list = data['tags'].split(",")
-        print(tag_list)
+        tags_str = data['tags']
+        if("," in tags_str):
+            tag_list = data['tags'].split(",")
+        else:
+            tag_list = [tags_str]
+        # print(tag_list)
         return filter_games_by_tags(tag_list)
     except (IndexError, ValueError):
         print(ValueError)
