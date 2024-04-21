@@ -95,7 +95,7 @@ export default function LearnYourPreference() {
           console.log(likeItems);
           navigate("/items", {
             state: {
-              "user-profiles": likeItems,
+              "user-likes": likeItems,
             },
           });
         }}

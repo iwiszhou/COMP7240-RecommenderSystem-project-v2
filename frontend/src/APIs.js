@@ -24,5 +24,8 @@ export const fetchRecommendGames = async (requestData) => {
     body: JSON.stringify({ "user-profiles": requestData }),
   });
   const data = await response.json();
+  Object.keys(data).forEach((x) => {
+    data[x] = JSON.parse(data[x]);
+  });
   return data;
 };

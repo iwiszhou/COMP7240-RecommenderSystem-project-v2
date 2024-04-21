@@ -2,7 +2,7 @@ from flask import Flask, request
 import json
 from flask_cors import CORS, cross_origin
 
-from filter_games import get_all_gaming_tags, filter_games_by_tags
+from filter_games import get_all_gaming_tags, filter_games_by_tags, to_json
 from recommend_processor import process_x_base, process_svd 
 
 app = Flask(__name__)
@@ -38,16 +38,21 @@ def get_games_by_tags():
 @cross_origin()
 def get_recommendation():
     try:
-        data = request.get_json()
+        # data = request.get_json()
+        data = json.loads(request.data)
         user_profiles = data['user-profiles']
         
         x_based_recommend = process_x_base(user_profiles)
         svd_recommend = process_svd(user_profiles)
 
-        return {
+        print(type(x_based_recommend))
+
+        result = {
             "content_based": x_based_recommend,
             "svd" : svd_recommend
         }
+
+        return result
     except (IndexError, ValueError):
         print(ValueError)
         return []

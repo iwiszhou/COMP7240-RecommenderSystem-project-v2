@@ -9,9 +9,13 @@ import NextButton from "./SubmitButton";
 import { useLocation, useNavigate } from "react-router-dom";
 import { fetchRecommendGames } from "./APIs";
 
+const generateNewUserId = () => {
+  return 100000 + parseInt(Math.random() * 10);
+};
+
 const methodExplanation = {
-  content_based: "Please give me a Explanation",
-  svd: "Please give me a Explanation",
+  content_based: "These games have similar tags as what you selected",
+  svd: "These games are recommended to you based on players who have the same preferences as you",
 };
 
 export default function Items() {
@@ -19,10 +23,17 @@ export default function Items() {
   const location = useLocation();
   const [items, setItems] = useState([]);
 
-  let userProfiles = location?.state?.["user-profiles"] || "";
-  console.log(userProfiles);
+  let userLikes = location?.state?.["user-likes"] || "";
+  console.log(userLikes);
 
   useEffect(() => {
+    const userId = generateNewUserId();
+    const userProfiles = userLikes.map((l) => ({
+      user_id: userId,
+      game_name: l.name,
+      game_id: l.game_id,
+      rating: 3,
+    }));
     fetchRecommendGames(userProfiles).then((data) => {
       console.log(data);
       setItems(data);
@@ -69,17 +80,17 @@ export default function Items() {
               {methodExplanation[m]}
             </Typography>
             <ImageList cols={5} gap={2}>
-              {items[m].map((item, index) => (
-                <ImageListItem key={item.game_id}>
+              {items[m].map((i, index) => (
+                <ImageListItem key={i.game_id}>
                   <img
-                    srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                    src={`${item.img}?w=248&fit=crop&auto=format`}
-                    alt={item.name}
+                    srcSet={`${i.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                    src={`${i.img}?w=248&fit=crop&auto=format`}
+                    alt={i.name}
                     loading="lazy"
                   />
                   <ImageListItemBar
-                    title={item.name}
-                    subtitle={item.developer}
+                    title={i.name}
+                    subtitle={i.developer}
                     sx={{
                       //   backgroundColor: "rgba(156,153,153,0.5)",
                       background: "rgb(2,0,36)",
@@ -89,7 +100,7 @@ export default function Items() {
                     actionIcon={
                       <IconButton
                         sx={{ color: "rgba(255, 255, 255, 0.54)" }}
-                        aria-label={`info about ${item.title}`}
+                        aria-label={`info about ${i.name}`}
                       >
                         <Rating
                           sx={
@@ -98,7 +109,7 @@ export default function Items() {
                             }
                           }
                           name="simple-controlled"
-                          value={items[index].all_reviews_score}
+                          value={i.all_reviews_score}
                           onChange={handleRateItemOnClick(index)}
                         />
                       </IconButton>
