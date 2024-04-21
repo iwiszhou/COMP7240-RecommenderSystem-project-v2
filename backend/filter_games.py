@@ -1,6 +1,6 @@
 import pandas as pd
 
-df = pd.read_csv("steam_games_with_one_hot_v2.csv")
+df = pd.read_csv("data/steam_games_with_one_hot_v2.csv")
 
 UI_MAX_RECORDS = 20
 
