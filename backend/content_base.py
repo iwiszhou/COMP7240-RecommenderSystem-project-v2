@@ -71,7 +71,8 @@ def predict(user_selections):
     return top_k_list
 
 _games_df = pd.read_csv(_GAMES_DATASET_FILENAME, index_col='game_id')
-_user_profiles_df = pd.read_csv(_USER_PROFILES_FILENAME, index_col='user_id')
 _genres_list = list(_games_df.columns[12:])
+new_user_profiles()
+_user_profiles_df = pd.read_csv(_USER_PROFILES_FILENAME, index_col='user_id')
 _games_one_hot_df = _games_df[_genres_list].copy(deep=True)
 _games_one_hot_matrix = np.array(_games_one_hot_df)
