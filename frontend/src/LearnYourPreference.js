@@ -16,8 +16,7 @@ export default function LearnYourPreference() {
   const location = useLocation();
   const [items, setItems] = useState([]);
 
-  let tags = location.state.tags;
-  console.log(tags);
+  let tags = location?.state?.tags || "";
 
   useEffect(() => {
     fetchGameByTags(tags).then((data) => {
@@ -35,28 +34,23 @@ export default function LearnYourPreference() {
   };
   return (
     <Box>
-      <ImageList sx={{}}>
-        <ImageListItem key="Subheader" cols={2}>
-          {/* <ListSubheader component="div">
-          
-        </ListSubheader> */}
-          <Typography
-            variant="h4"
-            gutterBottom
-            sx={{
-              //   backgroundColor: "#fee7da",
-              padding: "30px 100px 50px 100px",
-              fontWeight: "400",
-              textAlign: "center",
-              //   borderRadius: "5px",
-              color: "white",
-            }}
-          >
-            Which one you more preference ?
-          </Typography>
-        </ImageListItem>
+      <Typography
+        variant="h4"
+        gutterBottom
+        sx={{
+          //   backgroundColor: "#fee7da",
+          padding: "30px 100px 50px 100px",
+          fontWeight: "400",
+          textAlign: "center",
+          //   borderRadius: "5px",
+          color: "white",
+        }}
+      >
+        Which one you more preference ?
+      </Typography>
+      <ImageList cols={5} gap={2}>
         {items.map((item, index) => (
-          <ImageListItem key={item.id}>
+          <ImageListItem key={item.game_id}>
             <img
               srcSet={item.img}
               src={item.img}
@@ -97,7 +91,13 @@ export default function LearnYourPreference() {
       <NextButton
         text={"Done"}
         onClick={() => {
-          navigate("/items");
+          const likeItems = items.filter((i) => i.isLike);
+          console.log(likeItems);
+          navigate("/items", {
+            state: {
+              "user-profiles": likeItems,
+            },
+          });
         }}
       />
     </Box>

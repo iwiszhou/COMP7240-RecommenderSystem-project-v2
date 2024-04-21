@@ -3,7 +3,7 @@ import json
 from flask_cors import CORS, cross_origin
 
 from filter_games import get_all_gaming_tags, filter_games_by_tags
-from recommend_processor import process_item_base, process_svd 
+from recommend_processor import process_x_base, process_svd 
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -41,11 +41,11 @@ def get_recommendation():
         data = request.get_json()
         user_profiles = data['user-profiles']
         
-        item_based_recommend = process_item_base(user_profiles)
+        x_based_recommend = process_x_base(user_profiles)
         svd_recommend = process_svd(user_profiles)
 
         return {
-            "item_based": item_based_recommend,
+            "content_based": x_based_recommend,
             "svd" : svd_recommend
         }
     except (IndexError, ValueError):
