@@ -40,9 +40,9 @@ def get_recommendation():
     try:
         data = request.get_json()
         user_profiles = data['user-profiles']
-        print(user_profiles)
+        
         item_based_recommend = process_item_base(user_profiles)
-        svd_recommend = process_svd(process_svd)
+        svd_recommend = process_svd(user_profiles)
 
         return {
             "item_based": item_based_recommend,
