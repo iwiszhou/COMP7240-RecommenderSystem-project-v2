@@ -11,11 +11,14 @@ def remove_special_character(x):
 def create_game_image_url(game_id):
     return "https://cdn.cloudflare.steamstatic.com/steam/apps/"+str(game_id)+"/header.jpg?t=1709724676"
 
-def to_json(df, top_x_records):
+def to_json(_df, top_x_records):
     col_names = ["game_id", "url", "name", "all_reviews_score", "developer"]
-    if(len(df) < top_x_records):
-        selected_columns_df = df.loc[:, col_names]
+    if(len(_df) < top_x_records):
+        selected_columns_df = _df.loc[:, col_names]
     else:
+        selected_columns_df = _df.loc[:top_x_records, col_names]
+
+    if selected_columns_df.empty:
         selected_columns_df = df.loc[:top_x_records, col_names]
 
     # Create a new column img, so UI can display the Image
