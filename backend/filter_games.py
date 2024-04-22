@@ -50,4 +50,8 @@ def filter_games_by_tags(tags=[], top_x_records=UI_MAX_RECORDS):
     else:
         tags_join = "|".join(tags)
     filtered_df = df[df["genre"].str.contains(tags_join)]
+
+    # Default return the most famous combination
+    if(len(filtered_df) == 0):
+        filtered_df = df[df["genre"].str.contains("Action|RRG")]
     return to_json(filtered_df, top_x_records)
