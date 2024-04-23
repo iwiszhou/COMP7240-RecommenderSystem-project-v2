@@ -1,4 +1,6 @@
 import pandas as pd
+import requests
+from bs4 import BeautifulSoup
 
 df = pd.read_csv("data/steam_games_with_one_hot_v2.csv")
 
@@ -10,6 +12,16 @@ def remove_special_character(x):
 
 def create_game_image_url(game_id):
     return "https://cdn.cloudflare.steamstatic.com/steam/apps/"+str(game_id)+"/header.jpg?t=1709724676"
+
+def create_game_video_url(game_id):
+    url = 'https://store.steampowered.com/app/'+game_id+'/'
+    response = requests.get(url)
+    html_content = response.text
+    soup = BeautifulSoup(html_content, 'html.parser')
+    div_tag = soup.select_one('div[id^="highlight_movie_"]')
+    data_mp4_source = div_tag.get('data-mp4-source')
+    data_mp4_hd_source = div_tag.get('data-mp4-hd-source')
+    return data_mp4_source
 
 def to_json(_df, top_x_records):
     col_names = ["game_id", "url", "name", "all_reviews_score", "developer"]
@@ -24,7 +36,11 @@ def to_json(_df, top_x_records):
     # Create a new column img, so UI can display the Image
     selected_columns_df['img'] = selected_columns_df.apply(lambda x:create_game_image_url(x['game_id']), axis=1)
 
-    json_result = selected_columns_df.to_json(orient='records')
+    # Create a new column video, so UI can display the Video
+    selected_columns_df['video'] = selected_columns_df.apply(lambda x:create_game_video_url(x['game_id']), axis=1)
+
+    json_result = selected_columns_df.to_json(orient='records
+')
     # print(json_result)
     return json_result
 # End Helper functions
