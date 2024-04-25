@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 
 df = pd.read_csv("data/steam_games_with_one_hot_v2.csv")
 
-UI_MAX_RECORDS = 20
+UI_MAX_RECORDS = 40
 
 # Helper functions
 def remove_special_character(x):

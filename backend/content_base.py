@@ -13,7 +13,7 @@ def new_user_profiles():
     file_columns.insert(0, 'user_id')
     pd.DataFrame(columns=file_columns).to_csv(_USER_PROFILES_FILENAME, index=False)
 
-def predict(user_selections):
+def predict(user_selections, ab_test_mode):
     '''
     Python dict or JSON-like input: 
     [{"user_id": user_id, "game_name": game_name, "game_id": game_id, "rating": rating},]

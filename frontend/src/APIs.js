@@ -19,9 +19,24 @@ export const fetchGameByTags = async (requestData) => {
 };
 
 export const fetchRecommendGames = async (requestData) => {
+  let mode = "A";
+
+  const modeParameter = window.location.search;
+
+  if (modeParameter === "?mode=A") {
+    mode = "A";
+  } else if (modeParameter === "?mode=B") {
+    mode = "B";
+  } else {
+    mode = "AB";
+  }
+
   const response = await fetch(APIs.fetchRecommendGames, {
     method: "POST",
-    body: JSON.stringify({ "user-profiles": requestData }),
+    body: JSON.stringify({
+      "user-profiles": requestData,
+      "ab-test-mode": mode,
+    }),
   });
   const data = await response.json();
   Object.keys(data).forEach((x) => {

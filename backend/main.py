@@ -29,7 +29,8 @@ def get_games_by_tags():
         else:
             tag_list = [tags_str]
         # print(tag_list)
-        return filter_games_by_tags(tag_list)
+        result = filter_games_by_tags(tag_list)
+        return result 
     except (IndexError, ValueError):
         print(ValueError)
         return []
@@ -40,17 +41,28 @@ def get_recommendation():
     try:
         # data = request.get_json()
         data = json.loads(request.data)
+        # value can be A or B or AB
+        ab_test_mode = data['ab-test-mode']
+        print("ab_test_mode", ab_test_mode)
         user_profiles = data['user-profiles']
         
         x_based_recommend = process_x_base(user_profiles)
         svd_recommend = process_svd(user_profiles)
 
         print(type(x_based_recommend))
-
-        result = {
-            "content_based": x_based_recommend,
-            "svd" : svd_recommend
-        }
+        if(ab_test_mode == "AB"):
+            result = {
+                "content_based": x_based_recommend,
+                "svd" : svd_recommend
+            }
+        if(ab_test_mode == "B"):
+            result = {
+                "content_based": x_based_recommend,
+            }
+        if(ab_test_mode == "A"):
+            result = {
+                "svd" : svd_recommend
+            }
 
         return result
     except (IndexError, ValueError):
