@@ -40,14 +40,18 @@ def get_top_n_recommendations(model, user_id, transet_svd ,n=10, rated_items=[])
     return predictions[:n]
 
 
-def predict(user_profile_json):
-    
-    user_profiles = user_profile_json
+def predict(user_profile_json, ab_test_mode):
+    if ab_test_mode== 'B':
+        k=20
+    else
+        k=10
+    # Load user data from JSON string
+    user_profiles = json.loads(user_profile_json)
     rated_game_ids = []
 
     # Get the list of rated game IDs
     rated_game_ids = [profile['game_id'] for profile in user_profiles]
-    print(rated_game_ids)
+
     # update user profile to trainset CSV
     updateCSV(ratings_train_data, user_profile_json)
 
@@ -63,22 +67,19 @@ def predict(user_profile_json):
     for item in user_profiles:
         user_id = item['user_id']
 
-    # Get top 10 recommendations for the new user
-    recommendations = get_top_n_recommendations(model, user_id, transet_svd, n=10, rated_items=rated_game_ids )
+    # Get top 10 recommendations for the new user(if B mode for 20 recommendations(B test only))
+    recommendations = get_top_n_recommendations(model, user_id, transet_svd, n=k, rated_items=rated_game_ids )
 
     # Extract game IDs from predictions
     game_ids = [str(game_id)[:-2] for (game_id, _) in recommendations]
 
     # Convert game IDs to JSON array
-    # game_ids_json = json.dumps(game_ids)
+    game_ids_json = json.dumps(game_ids)
 
-    # Convert string to int
-    game_ids_int = [int(i) for i in game_ids]
-
-    return game_ids_int
+    return game_ids_json
 
 def updateCSV(csv_file,user_profile_json):
-    user_profiles = user_profile_json
+    user_profiles = json.loads(user_profile_json)
     with open(csv_file, 'a', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=user_profiles[0].keys())
         writer.writerows(user_profiles)
