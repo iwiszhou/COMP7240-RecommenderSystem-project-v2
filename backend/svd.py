@@ -41,12 +41,11 @@ def get_top_n_recommendations(model, user_id, transet_svd ,n=10, rated_items=[])
 
 
 def predict(user_profile_json, ab_test_mode):
-    if ab_test_mode== 'B':
+    if ab_test_mode == 'B':
         k=20
     else:
         k=10
-    # Load user data from JSON string
-    user_profiles = json.loads(user_profile_json)
+    user_profiles = user_profile_json
     rated_game_ids = []
 
     # Get the list of rated game IDs
