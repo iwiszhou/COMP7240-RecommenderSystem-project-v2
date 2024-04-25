@@ -21,14 +21,10 @@ export const fetchGameByTags = async (requestData) => {
 export const fetchRecommendGames = async (requestData) => {
   let mode = "A";
 
-  const modeParameter = window.location.search;
-
-  if (modeParameter === "?mode=A") {
+  if (sessionStorage.getItem("mode") == null) {
     mode = "A";
-  } else if (modeParameter === "?mode=B") {
-    mode = "B";
   } else {
-    mode = "AB";
+    mode = sessionStorage.getItem("mode");
   }
 
   const response = await fetch(APIs.fetchRecommendGames, {

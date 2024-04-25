@@ -43,11 +43,12 @@ def get_recommendation():
         data = json.loads(request.data)
         # value can be A or B or AB
         ab_test_mode = data['ab-test-mode']
+
         print("ab_test_mode", ab_test_mode)
         user_profiles = data['user-profiles']
         
-        x_based_recommend = process_x_base(user_profiles)
-        svd_recommend = process_svd(user_profiles)
+        x_based_recommend = process_x_base(user_profiles, ab_test_mode)
+        svd_recommend = process_svd(user_profiles, ab_test_mode)
 
         print(type(x_based_recommend))
         if(ab_test_mode == "AB"):

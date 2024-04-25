@@ -16,6 +16,16 @@ function Tags() {
   const [tagData, setTagData] = useState([]);
 
   useEffect(() => {
+    const modeParameter = window.location.search;
+    let mode = "A";
+    if (modeParameter === "?mode=A") {
+      mode = "A";
+    } else if (modeParameter === "?mode=B") {
+      mode = "B";
+    } else {
+      mode = "AB";
+    }
+    sessionStorage.setItem("mode", mode);
     fetchTag().then((data) => {
       console.log(data);
       setTagData(data);
