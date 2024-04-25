@@ -74,12 +74,16 @@ def predict(user_profile_json, ab_test_mode):
     game_ids = [str(game_id)[:-2] for (game_id, _) in recommendations]
 
     # Convert game IDs to JSON array
-    game_ids_json = json.dumps(game_ids)
+    #game_ids_json = json.dumps(game_ids)
 
-    return game_ids_json
+    #return game_ids_json
+    # Convert string to int
+    game_ids_int = [int(i) for i in game_ids]
+
+    return game_ids_int
 
 def updateCSV(csv_file,user_profile_json):
-    user_profiles = json.loads(user_profile_json)
+    user_profiles = user_profile_json
     with open(csv_file, 'a', newline='') as file:
         writer = csv.DictWriter(file, fieldnames=user_profiles[0].keys())
         writer.writerows(user_profiles)
