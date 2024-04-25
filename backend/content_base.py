@@ -64,10 +64,12 @@ def predict(user_selections, ab_test_mode):
 
     _update_user_profiles()
     user_ids = _get_all_users_in_a_query()
+    k = 10
+    if ab_test_mode == 'A': k = 20
     for user_id in user_ids:
         user_profile_normalized = _normalize(_user_profiles_df.loc[user_id])
         ratings_vector = _games_one_hot_matrix @ user_profile_normalized.T
-        top_k_list = _get_top(ratings_vector, k=10)
+        top_k_list = _get_top(ratings_vector, k=k)
     return top_k_list
 
 _games_df = pd.read_csv(_GAMES_DATASET_FILENAME, index_col='game_id')
