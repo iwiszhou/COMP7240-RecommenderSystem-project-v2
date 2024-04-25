@@ -14,7 +14,7 @@ def create_game_image_url(game_id):
     return "https://cdn.cloudflare.steamstatic.com/steam/apps/"+str(game_id)+"/header.jpg?t=1709724676"
 
 def create_game_video_url(game_id):
-    url = 'https://store.steampowered.com/app/'+game_id+'/'
+    url = 'https://store.steampowered.com/app/'+str(game_id)+'/'
     response = requests.get(url)
     html_content = response.text
     soup = BeautifulSoup(html_content, 'html.parser')
@@ -37,10 +37,9 @@ def to_json(_df, top_x_records):
     selected_columns_df['img'] = selected_columns_df.apply(lambda x:create_game_image_url(x['game_id']), axis=1)
 
     # Create a new column video, so UI can display the Video
-    selected_columns_df['video'] = selected_columns_df.apply(lambda x:create_game_video_url(x['game_id']), axis=1)
+    # selected_columns_df['video'] = selected_columns_df.apply(lambda x:create_game_video_url(x['game_id']), axis=1)
 
-    json_result = selected_columns_df.to_json(orient='records
-')
+    json_result = selected_columns_df.to_json(orient='records')
     # print(json_result)
     return json_result
 # End Helper functions

@@ -119,12 +119,15 @@ export default function Items() {
             <ImageList cols={5} gap={2}>
               {items[m].map((i, index) => (
                 <ImageListItem key={i.game_id}>
-                  <img
-                    srcSet={`${i.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                    src={`${i.img}?w=248&fit=crop&auto=format`}
-                    alt={i.name}
-                    loading="lazy"
-                  />
+                  <a href={i.url} target="_blank" alt="" rel="noreferrer">
+                    <img
+                      srcSet={`${i.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                      src={`${i.img}?w=248&fit=crop&auto=format`}
+                      alt={i.name}
+                      loading="lazy"
+                      width={"100%"}
+                    />
+                  </a>
                   <ImageListItemBar
                     title={i.name}
                     subtitle={i.developer}

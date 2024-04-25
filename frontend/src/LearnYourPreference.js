@@ -51,12 +51,24 @@ export default function LearnYourPreference() {
       <ImageList cols={5} gap={2}>
         {items.map((item, index) => (
           <ImageListItem key={item.game_id}>
-            <img
-              srcSet={item.img}
-              src={item.img}
-              alt={item.name}
-              loading="lazy"
-            />
+            <a href={item.url} target="_blank" alt="" rel="noreferrer">
+              <img
+                srcSet={item.img}
+                src={item.img}
+                alt={item.name}
+                loading="lazy"
+                width={"100%"}
+              />
+            </a>
+
+            {/* <video
+              poster={item.url}
+              onMouseOver={(event) => event.target.play()}
+              onMouseOut={(event) => event.target.pause()}
+              width={"100%"}
+              src={item.video}
+            ></video> */}
+
             <ImageListItemBar
               title={item.name}
               subtitle={item.developer}
